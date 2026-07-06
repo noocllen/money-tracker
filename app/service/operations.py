@@ -87,7 +87,7 @@ def get_operations_list(
     return result
 
 
-def transfer_between_wallets(
+async def transfer_between_wallets(
         db: Session, user_id: int, from_wallet_id: int, to_wallet_id: int, amount: Decimal
 ) -> OperationResponse:
     from_wallet = wallets_repository.get_wallet_by_id(db, user_id, from_wallet_id)
@@ -104,7 +104,7 @@ def transfer_between_wallets(
     target_amount = amount
     exchange_rate = 1.0
     if from_wallet.currency != to_wallet.currency:
-        exchange_rate = get_exchange_rate(
+        exchange_rate = await get_exchange_rate(
             from_wallet.currency, to_wallet.currency
         )
         target_amount = round(amount * exchange_rate, 2)
@@ -116,7 +116,7 @@ def transfer_between_wallets(
         wallet_id=from_wallet.id,
         type=OperationType.TRANSFER,
         amount=target_amount,
-        currency=from_wallet.currency,
+        currency=to_wallet.currency,
         category="перевод"
     )
     db.add(from_wallet)
