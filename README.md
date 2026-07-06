@@ -18,13 +18,3 @@ PostgreSQL
 Pydantic
 Alembic
 Docker
-
-Структура проекта
-app/
-├── api/
-├── models/
-├── repositories/
-├── schemas/
-├── services/
-├── static/
-└── main.py
